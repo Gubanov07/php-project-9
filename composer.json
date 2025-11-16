@@ -1,0 +1,14 @@
+{
+    "name": "hexlet/code",
+    "description": "Hexlet-Page-Analyzer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alexandr",
+            "email": "sgubanov325@gmail.com"
+        }
+    ],
+    "require": {
+        "wp-cli/php-cli-tools": "^0.11.22"
+    }
+}
