@@ -1,0 +1,26 @@
+<?php
+$this->layout('layout.phtml', ['title' => 'Анализатор страниц']);
+?>
+
+<div class="container-lg flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <h1 class="display-4 text-center my-4">Анализатор страниц</h1>
+            <p class="lead text-center mb-4">Бесплатно проверяйте сайты на SEO-пригодность</p>
+            
+            <form action="/urls" method="post" class="mb-5">
+                <div class="input-group mb-3">
+                    <input type="text" name="url[name]" value="<?= htmlspecialchars($url['name'] ?? '') ?>" 
+                           class="form-control form-control-lg" placeholder="https://www.example.com" required>
+                    <button type="submit" class="btn btn-primary btn-lg px-4">Проверить</button>
+                </div>
+                
+                <?php if (isset($errors['name'])): ?>
+                    <div class="alert alert-danger small">
+                        <?= htmlspecialchars($errors['name']) ?>
+                    </div>
+                <?php endif ?>
+            </form>
+        </div>
+    </div>
+</div>
