@@ -16,9 +16,11 @@ $this->layout('layout.phtml', ['title' => 'Анализатор страниц']
                 </div>
                 
                 <?php if (isset($errors['name'])): ?>
-                    <div class="alert alert-danger small">
-                        <?= htmlspecialchars($errors['name']) ?>
-                    </div>
+                    <?php foreach ($errors['name'] as $error): ?>
+                        <div class="alert alert-danger small">
+                            <?= htmlspecialchars($error) ?>
+                        </div>
+                    <?php endforeach ?>
                 <?php endif ?>
             </form>
         </div>
