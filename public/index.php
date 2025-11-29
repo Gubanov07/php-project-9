@@ -84,4 +84,30 @@ $app->post('/urls', function ($request, $response) {
     return $response->withRedirect($this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]));
 });
 
+$app->post('/urls/{id}/checks', function ($request, $response, $args) {
+    $urlId = $args['id'];
+    $urlModel = $this->get('urlModel');
+    $urlCheckModel = $this->get('urlCheckModel');
+    
+    // Проверяем, существует ли URL
+    $url = $urlModel->find($urlId);
+    if (!$url) {
+        return $response->withStatus(404)->write('Page not found');
+    }
+    
+    // Создаем проверку (пока только базовые поля)
+    $checkData = [
+        'url_id' => $urlId,
+        'status_code' => null, // Пока не реализовано
+        'h1' => null,
+        'title' => null,
+        'description' => null
+    ];
+    
+    $urlCheckModel->create($checkData);
+    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+    
+    return $response->withRedirect($this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]));
+})->setName('urls.checks');
+
 $app->run();
