@@ -14,6 +14,12 @@ require __DIR__ . '/../vendor/autoload.php';
 $container = new Container();
 AppFactory::setContainer($container);
 
+$container->set('httpClient', fn() => new Client([
+    'timeout' => 5,
+    'connect_timeout' => 5,
+    'allow_redirects' => true,
+]));
+
 $container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
 $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
@@ -88,26 +94,64 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
     $urlCheckModel = $this->get('urlCheckModel');
+    $httpClient = $this->get('httpClient');
     
-    // Проверяем, существует ли URL
-    $url = $urlModel->find($urlId);
+$url = $urlModel->find($urlId);
     if (!$url) {
         return $response->withStatus(404)->write('Page not found');
     }
     
-    // Создаем проверку (пока только базовые поля)
-    $checkData = [
-        'url_id' => $urlId,
-        'status_code' => null, // Пока не реализовано
-        'h1' => null,
-        'title' => null,
-        'description' => null
-    ];
-    
-    $urlCheckModel->create($checkData);
-    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+try {
+        $res = $httpClient->request('GET', $urlName, [
+            'http_errors' => false,
+        ]);
+        
+        $statusCode = $res->getStatusCode();
+        $body = (string) $res->getBody();
+        
+        $h1 = $this->extractH1($body);
+        $title = $this->extractTitle($body);
+        $description = $this->extractDescription($body);
+        
+        $checkData = [
+            'url_id' => $urlId,
+            'status_code' => $statusCode,
+            'h1' => $h1,
+            'title' => $title,
+            'description' => $description
+        ];
+        
+        $urlCheckModel->create($checkData);
+        $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+        
+    } catch (RequestException $e) {
+        $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке: ' . $e->getMessage());
+    } catch (Exception $e) {
+        $this->get('flash')->addMessage('error', 'Произошла непредвиденная ошибка');
+    }
     
     return $response->withRedirect($this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]));
 })->setName('urls.checks');
+
+function extractH1($html) {
+    if (preg_match('/<h1[^>]*>(.*?)<\/h1>/is', $html, $matches)) {
+        return trim(strip_tags($matches[1]));
+    }
+    return null;
+}
+
+function extractTitle($html) {
+    if (preg_match('/<title[^>]*>(.*?)<\/title>/is', $html, $matches)) {
+        return trim(strip_tags($matches[1]));
+    }
+    return null;
+}
+
+function extractDescription($html) {
+    if (preg_match('/<meta[^>]*name=["\']description["\'][^>]*content=["\'](.*?)["\']/is', $html, $matches)) {
+        return trim($matches[1]);
+    }
+    return null;
+}
 
 $app->run();
