@@ -27,6 +27,9 @@ $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
+$container->set('renderer', function () {
+    return new PhpRenderer(__DIR__ . '/../templates', ['layout.phtml']);
+});
 
 $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);

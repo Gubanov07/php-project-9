@@ -11,7 +11,8 @@ $this->layout('layout.phtml', ['title' => 'Анализатор страниц']
             <form action="/urls" method="post" class="mb-5">
                 <div class="input-group mb-3">
                     <input type="text" name="url[name]" value="<?= htmlspecialchars($url['name'] ?? '') ?>" 
-                           class="form-control form-control-lg" placeholder="https://www.example.com" required>
+                           class="form-control form-control-lg <?= isset($errors['name']) ? 'is-invalid' : '' ?>" 
+                           placeholder="https://www.example.com" required>
                     <button type="submit" class="btn btn-primary btn-lg px-4">Проверить</button>
                 </div>
                 

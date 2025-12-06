@@ -36,7 +36,26 @@
     <?php endif ?>
 
     <main class="flex-grow-1">
-        <?= $content ?? '' ?>
+        <?php 
+        // Получаем имя текущего шаблона из пути
+        $templatePath = $this->getTemplate() ?? '';
+        $templateName = basename($templatePath);
+        
+        // В зависимости от шаблона, включаем соответствующий файл
+        switch ($templateName) {
+            case 'index.phtml':
+                include __DIR__ . '/index.phtml';
+                break;
+            case 'urls/index.phtml':
+                include __DIR__ . '/urls/index.phtml';
+                break;
+            case 'urls/show.phtml':
+                include __DIR__ . '/urls/show.phtml';
+                break;
+            default:
+                echo 'Шаблон не найден';
+        }
+        ?>
     </main>
 
     <footer class="border-top py-3 mt-5 flex-shrink-0">

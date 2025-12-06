@@ -47,7 +47,7 @@ $this->layout('layout.phtml', ['title' => $url['name']]);
             <?php foreach ($checks as $check): ?>
             <tr>
                 <td><?= htmlspecialchars($check['id']) ?></td>
-                <td><?= htmlspecialchars($check['status_code']) ?></td>
+                <td><?= htmlspecialchars($check['status_code'] ?? '') ?></td>
                 <td><?= htmlspecialchars($check['h1'] ?? '') ?></td>
                 <td><?= htmlspecialchars($check['title'] ?? '') ?></td>
                 <td><?= htmlspecialchars($check['description'] ?? '') ?></td>
