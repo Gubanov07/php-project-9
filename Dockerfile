@@ -1,7 +1,7 @@
 FROM php:8.4-cli
 
 
-RUN apt-get update && apt-get install -y libzip-dev libpq-dev
+RUN apt-get update && apt-get install -y libzip-dev libpq-dev postgresql-client
 RUN docker-php-ext-install zip pdo pdo_pgsql
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -13,5 +13,6 @@ WORKDIR /app
 COPY . .
 
 RUN composer install
+
 
 CMD ["bash", "-c", "make start"]
