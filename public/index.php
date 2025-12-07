@@ -22,7 +22,19 @@ $container->set('httpClient', fn() => new Client([
     'allow_redirects' => true,
 ]));
 
-$container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
+$container->set('renderer', function () {
+    $renderer = new PhpRenderer(__DIR__ . '/../templates');
+    $renderer->setLayoutRender(function ($template, $data = [], $withLayout = true) use ($renderer) {
+        if (!$withLayout) {
+            return $renderer->fetch($template, $data);
+        }
+        $content = $renderer->fetch($template, $data);
+        return $renderer->fetch('layout.phtml', array_merge($data, ['content' => $content]));
+    });
+    
+    return $renderer;
+});
+
 $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
