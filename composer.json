@@ -2,6 +2,13 @@
     "name": "hexlet/code",
     "description": "Hexlet-Page-Analyzer",
     "type": "project",
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+
     "authors": [
         {
             "name": "Alexandr",
