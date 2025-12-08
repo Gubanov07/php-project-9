@@ -1,6 +1,4 @@
-<?php
-$this->layout('layout.phtml', ['title' => $url['name']]);
-?>
+<?php require 'components/header.phtml'; ?>
 
 <div class="container-lg">
     <h1 class="display-4 my-4">Сайт: <?= htmlspecialchars($url['name']) ?></h1>
@@ -57,3 +55,5 @@ $this->layout('layout.phtml', ['title' => $url['name']]);
         </tbody>
     </table>
 </div>
+
+<?php require 'components/footer.phtml'; ?>
