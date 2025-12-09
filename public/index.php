@@ -10,6 +10,7 @@ use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
 use App\Validation\UrlValidator;
+use Slim\Interfaces\RouteParserInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -121,7 +122,7 @@ $app->post('/urls', function ($request, $response) {
     }
     
     return $response
-    ->withHeader('Location', $this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]))
+        ->withHeader('Location', $this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]))
     ->withStatus(302);
 });
 
