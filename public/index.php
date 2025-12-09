@@ -11,6 +11,8 @@ use App\Models\Url;
 use App\Models\UrlCheck;
 use App\Validation\UrlValidator;
 use Slim\Interfaces\RouteParserInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -54,10 +56,7 @@ $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('renderer', function () {
     return new PhpRenderer(__DIR__ . '/../templates', ['components/header.phtml']);
 });
-$container->set('flash', function () {
-    $storage = [];
-    return new \Slim\Flash\Messages($storage);
-});
+
 
 $app->addErrorMiddleware(true, true, true);
 
