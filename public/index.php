@@ -121,9 +121,7 @@ $app->post('/urls', function ($request, $response) {
         $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
     }
     
-    return $response
-        ->withHeader('Location', $this->get('renderer')->getRouteParser()->urlFor('urls.show', ['id' => $urlId]))
-    ->withStatus(302);
+    return $response->withHeader('Location', '/urls/' . $urlId)->withStatus(302);
 });
 
 $app->post('/urls/{id}/checks', function ($request, $response, $args) {
