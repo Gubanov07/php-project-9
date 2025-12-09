@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: page-analyzer
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    initCommands:
+      - psql $DATABASE_URL -f database.sql
