@@ -35,12 +35,30 @@ $container->set('renderer', function () {
     return $renderer;
 });
 
-$container->set('flash', fn() => new Messages());
+$container->set('flash', function () {
+    $storage = [];
+    return new \Slim\Flash\Messages($storage);
+});
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('renderer', function () {
     return new PhpRenderer(__DIR__ . '/../templates', ['layout.phtml']);
+});
+$container->set('flash', function () {
+    $storage = [];
+    return new \Slim\Flash\Messages($storage);
+});
+
+$app->add(function ($request, $handler) use (&$session) {
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+    $request = $request->withAttribute('session', $_SESSION);
+    $response = $handler->handle($request);
+    $_SESSION = $request->getAttribute('session', []);
+    
+    return $response;
 });
 
 $app = AppFactory::create();
