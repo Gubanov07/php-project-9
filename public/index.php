@@ -15,6 +15,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $container = new Container();
 AppFactory::setContainer($container);
+$app = AppFactory::create();
+
+$app->add(function ($request, $handler) {
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+    
+    return $handler->handle($request);
+});
 
 $container->set('httpClient', fn() => new Client([
     'timeout' => 5,
@@ -35,9 +44,8 @@ $container->set('renderer', function () {
     return $renderer;
 });
 
-$container->set('flash', function () {
-    $storage = [];
-    return new \Slim\Flash\Messages($storage);
+$container->set('flash', function () { 
+    return new Messages();
 });
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
@@ -50,18 +58,6 @@ $container->set('flash', function () {
     return new \Slim\Flash\Messages($storage);
 });
 
-$app->add(function ($request, $handler) use (&$session) {
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
-    $request = $request->withAttribute('session', $_SESSION);
-    $response = $handler->handle($request);
-    $_SESSION = $request->getAttribute('session', []);
-    
-    return $response;
-});
-
-$app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
