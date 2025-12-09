@@ -52,7 +52,7 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('renderer', function () {
-    return new PhpRenderer(__DIR__ . '/../templates', ['layout.phtml']);
+    return new PhpRenderer(__DIR__ . '/../templates', ['components/header.phtml']);
 });
 $container->set('flash', function () {
     $storage = [];
@@ -90,7 +90,7 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
         return $response->withStatus(404)->write('Page not found');
     }
 
-    return $this->get('renderer')->render($response, 'urls/show.phtml', [
+    return $this->get('renderer')->render($response, 'show.phtml', [
         'url' => $url,
         'checks' => $this->get('urlCheckModel')->findByUrlId($args['id']),
         'flash' => $this->get('flash')
