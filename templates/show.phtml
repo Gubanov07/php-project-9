@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>Дата создания</th>
-                <td><?= htmlspecialchars($url['created_at']) ?></td>
+                <td><?= htmlspecialchars(date('d.m.Y H:i', strtotime($url['created_at']))) ?></td>
             </tr>
         </tbody>
     </table>
@@ -48,7 +48,7 @@
                 <td><?= htmlspecialchars($check['h1'] ?? '') ?></td>
                 <td><?= htmlspecialchars($check['title'] ?? '') ?></td>
                 <td><?= htmlspecialchars($check['description'] ?? '') ?></td>
-                <td><?= htmlspecialchars($check['created_at']) ?></td>
+                <td><?= htmlspecialchars(date('d.m.Y H:i', strtotime($url['created_at']))) ?></td>
             </tr>
             <?php endforeach ?>
         </tbody>
