@@ -1,14 +1,10 @@
 <?php require 'components/header.phtml'; ?>
 
-<?php if ($flash->hasMessages()): ?>
-    <?php foreach (['success', 'warning', 'error', 'info'] as $type): ?>
-        <?php if ($flash->hasMessages($type)): ?>
-            <?php foreach ($flash->getMessages($type) as $message): ?>
-                <div class="alert alert-<?= $type === 'error' ? 'danger' : $type ?>" role="alert">
-                    <?= htmlspecialchars($message) ?>
-                </div>
-            <?php endforeach ?>
-        <?php endif ?>
+<?php if (count($flash) > 0) : ?>
+    <?php foreach ($flash as $messages) : ?>
+        <?php foreach ($messages as $message) : ?>
+            <div class="alert alert-<?= $alert ?>" role="alert"><?= $message ?></div>
+        <?php endforeach ?>
     <?php endforeach ?>
 <?php endif ?>
 
