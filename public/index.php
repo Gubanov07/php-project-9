@@ -47,15 +47,11 @@ $container->set('renderer', function () {
     return $renderer;
 });
 
-$container->set('flash', function () { 
-    return new Messages();
-});
+$container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
-$container->set('renderer', function () {
-    return new PhpRenderer(__DIR__ . '/../templates', ['components/header.phtml']);
-});
+$container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
 
 
 $app->addErrorMiddleware(true, true, true);
@@ -76,7 +72,7 @@ $app->get('/urls', function ($request, $response) {
         'last_check' => $urlCheckModel->getLastCheck($url['id'])
     ], $urls);
 
-    return $this->get('renderer')->render($response, 'urls/index.phtml', [
+    return $this->get('renderer')->render($response, 'urls.phtml', [
         'urls' => $urlsWithChecks,
         'flash' => $this->get('flash')
     ]);

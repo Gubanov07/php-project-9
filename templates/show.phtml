@@ -1,36 +1,41 @@
 <?php require 'components/header.phtml'; ?>
 
-<div class="container-lg">
-    <h1 class="display-4 my-4">Сайт: <?= htmlspecialchars($url['name']) ?></h1>
-    
-    <table class="table table-bordered table-hover" data-test="url">
-        <tbody>
-            <tr>
-                <th>ID</th>
-                <td><?= htmlspecialchars($url['id']) ?></td>
-            </tr>
-            <tr>
-                <th>Имя</th>
-                <td>
-                    <a href="<?= htmlspecialchars($url['name']) ?>" target="_blank">
-                        <?= htmlspecialchars($url['name']) ?>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <th>Дата создания</th>
-                <td><?= htmlspecialchars(date('d.m.Y H:i', strtotime($url['created_at']))) ?></td>
-            </tr>
-        </tbody>
-    </table>
+<?php if (count($flash) > 0) : ?>
+    <?php foreach ($flash as $messages) : ?>
+        <?php foreach ($messages as $message) : ?>
+            <div class="alert alert-<?= $alert ?>" role="alert"><?= $message ?></div>
+        <?php endforeach ?>
+    <?php endforeach ?>
+<?php endif ?>
+
+<main class="flex-grow-1">
+    <div class="container-lg mt-3">
+        <h1>Сайт: <?= $url['name'] ?></h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-nowrap" data-test="url">
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td><?= $url['id'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td><?= $url['name'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Дата создания</td>
+                        <td><?= $url['created_at'] ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     <h2 class="mt-5 mb-3">Проверки</h2>
     <form method="post" action="/urls/<?= $url['id'] ?>/checks">
-        <button type="submit" class="btn btn-primary mb-3">Запустить проверку</button>
+        <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form>
-    
-    <table class="table table-bordered table-hover" data-test="checks">
-        <thead class="table-dark">
+    <table class="table table-bordered table-hover mt-3" data-test="checks">
+        <tbody>
             <tr>
                 <th>ID</th>
                 <th>Код ответа</th>
@@ -39,20 +44,21 @@
                 <th>description</th>
                 <th>Дата создания</th>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($checks as $check): ?>
+
+            <?php foreach ($checks as $check) : ?>
             <tr>
-                <td><?= htmlspecialchars($check['id']) ?></td>
-                <td><?= htmlspecialchars($check['status_code'] ?? '') ?></td>
-                <td><?= htmlspecialchars($check['h1'] ?? '') ?></td>
-                <td><?= htmlspecialchars($check['title'] ?? '') ?></td>
-                <td><?= htmlspecialchars($check['description'] ?? '') ?></td>
-                <td><?= htmlspecialchars(date('d.m.Y H:i', strtotime($url['created_at']))) ?></td>
+                <td><?= $check['id'] ?></td>
+                <td><?= $check['status_code'] ?></td>
+                <td class="text-break"><?= $check['h1'] ?></td>
+                <td class="text-break"><?= $check['title'] ?></td>
+                <td class="text-break"><?= $check['description'] ?></td>
+                <td><?= $check['created_at'] ?></td>
             </tr>
             <?php endforeach ?>
         </tbody>
     </table>
-</div>
+
+    </div>
+</main>
 
 <?php require 'components/footer.phtml'; ?>

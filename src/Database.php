@@ -32,6 +32,10 @@ class Database
 
         $dsn = "pgsql:host={$host};port={$port};dbname={$dbName}";
 
+        if (getenv('RENDER')) {
+            $dsn .= ";sslmode=require";
+        }
+
         try {
             $this->connection = new PDO($dsn, $username, $password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
