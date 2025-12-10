@@ -39,4 +39,26 @@ class Url
         $stmt->execute([$name]);
         return $stmt->fetch()['id'];
     }
+
+    public function getAllWithLastCheck()
+    {
+    $sql = "
+        SELECT 
+            u.id,
+            u.name,
+            u.created_at,
+            uc.status_code,
+            uc.created_at as last_check_at
+        FROM urls u
+        LEFT JOIN (
+            SELECT DISTINCT ON (url_id) url_id, status_code, created_at
+            FROM url_checks
+            ORDER BY url_id, created_at DESC
+        ) uc ON u.id = uc.url_id
+        ORDER BY u.created_at DESC
+    ";
+    
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll();
+    }
 }
