@@ -1,6 +1,6 @@
 <?php require 'components/header.phtml'; ?>
 
-<?php if (count($flash) > 0) : ?>
+<?php if (!empty($flash->getMessages())) : ?>
     <?php foreach ($flash as $messages) : ?>
         <?php foreach ($messages as $message) : ?>
             <div class="alert alert-<?= $alert ?>" role="alert"><?= $message ?></div>
