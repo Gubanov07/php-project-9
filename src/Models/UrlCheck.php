@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DOMDocument;
+use DiDom\Document;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -24,7 +24,7 @@ class UrlCheck
             $data['status_code'],
             $data['h1'] ?? null,
             $data['title'] ?? null,
-            $data['description'] ?? null,
+            $data['description'] ?? null
         ]);
         return $this->db->lastInsertId();
     }
