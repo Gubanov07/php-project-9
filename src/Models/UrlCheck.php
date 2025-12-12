@@ -17,14 +17,15 @@ class UrlCheck
 
     public function create($data)
     {
-        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description) VALUES (?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             $data['url_id'],
             $data['status_code'],
             $data['h1'] ?? null,
             $data['title'] ?? null,
-            $data['description'] ?? null
+            $data['description'] ?? null,
+            $data['created_at'] ?? date('Y-m-d H:i:s')
         ]);
         return $this->db->lastInsertId();
     }
