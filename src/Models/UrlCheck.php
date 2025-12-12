@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DiDom\Document;
+use DOMDocument;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -17,7 +17,7 @@ class UrlCheck
 
     public function create($data)
     {
-        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description) VALUES (?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             $data['url_id'],
@@ -25,7 +25,6 @@ class UrlCheck
             $data['h1'] ?? null,
             $data['title'] ?? null,
             $data['description'] ?? null,
-            $data['created_at'] ?? date('Y-m-d H:i:s')
         ]);
         return $this->db->lastInsertId();
     }

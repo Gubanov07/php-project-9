@@ -46,7 +46,6 @@ $container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
 $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
-// Маршруты
 $app->get('/', function ($request, $response) {
     $params = ['itemMenu' => 'main'];
     if (isset($url)) {
