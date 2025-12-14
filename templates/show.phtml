@@ -52,7 +52,11 @@
                 <td class="text-break"><?= $check['h1'] ?></td>
                 <td class="text-break"><?= $check['title'] ?></td>
                 <td class="text-break"><?= $check['description'] ?></td>
-                <td><?= $check['created_at'] ?></td>
+                <td>
+                    <?php if (!empty($check['created_at'])): ?>
+                        <?= date('Y-m-d H:i:s', strtotime($check['created_at'])) ?>
+                    <?php endif; ?>
+                </td>
             </tr>
             <?php endforeach ?>
         </tbody>

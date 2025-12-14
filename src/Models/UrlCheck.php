@@ -43,15 +43,15 @@ class UrlCheck
         return $stmt->fetch();
     }
 
-        public function performCheck($urlId, $url)
+    public function performCheck($urlId, $url)
     {
         $client = new Client([
-            'timeout' => 10,
-            'connect_timeout' => 10,
-            'allow_redirects' => true,
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (compatible; PageAnalyzer/1.0)'
-            ]
+        'timeout' => 10,
+        'connect_timeout' => 10,
+        'allow_redirects' => true,
+        'headers' => [
+            'User-Agent' => 'Mozilla/5.0 (compatible; PageAnalyzer/1.0)'
+        ]
         ]);
 
         try {
@@ -60,7 +60,7 @@ class UrlCheck
             $body = (string) $response->getBody();
 
             $document = new Document($body);
-            
+
             // Извлекаем данные
             $h1 = $this->extractH1($document);
             $title = $this->extractTitle($document);
@@ -79,11 +79,10 @@ class UrlCheck
             return [
                 'success' => true,
                 'status_code' => $statusCode,
-                'message' => $statusCode >= 200 && $statusCode < 300 
-                    ? 'Страница успешно проверена' 
+                'message' => $statusCode >= 200 && $statusCode < 300
+                    ? 'Страница успешно проверена'
                     : "Страница проверена, но вернула код {$statusCode}"
             ];
-
         } catch (RequestException $e) {
             return [
                 'success' => false,

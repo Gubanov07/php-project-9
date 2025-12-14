@@ -27,5 +27,13 @@
         "nesbot/carbon": "^2.0",
         "imangazaliev/didom": "^2.0",
         "ext-pdo": "*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+
+    "scripts": {
+        "lint": "phpcs --standard=PSR12 app public",
+        "lint-fix": "phpcbf --standard=PSR12 app public"
     }
 }

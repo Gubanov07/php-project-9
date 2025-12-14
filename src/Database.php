@@ -13,17 +13,17 @@ class Database
     private function __construct()
     {
         $databaseUrl = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
-        
+
         if (!$databaseUrl) {
             die("DATABASE_URL environment variable is not set");
         }
-        
+
         $databaseUrl = parse_url($databaseUrl);
-        
+
         if (!$databaseUrl) {
             die("Invalid DATABASE_URL format");
         }
-        
+
         $username = $databaseUrl['user'] ?? '';
         $password = $databaseUrl['pass'] ?? '';
         $host = $databaseUrl['host'] ?? '';

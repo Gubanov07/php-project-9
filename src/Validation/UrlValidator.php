@@ -22,7 +22,7 @@ class UrlValidator
         $scheme = $parsedUrl['scheme'] ?? 'https';
         $host = $parsedUrl['host'] ?? '';
         $path = $parsedUrl['path'] ?? '';
-        
+
         return "{$scheme}://{$host}{$path}";
     }
 }

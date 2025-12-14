@@ -42,7 +42,7 @@ class Url
 
     public function getAllWithLastCheck()
     {
-    $sql = "
+        $sql = "
         SELECT 
             u.id,
             u.name,
@@ -57,8 +57,8 @@ class Url
         ) uc ON u.id = uc.url_id
         ORDER BY u.created_at DESC
     ";
-    
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll();
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll();
     }
 }

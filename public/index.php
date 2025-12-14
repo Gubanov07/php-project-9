@@ -21,7 +21,7 @@ $app->add(function ($request, $handler) {
     if (session_status() !== PHP_SESSION_ACTIVE) {
         session_start();
     }
-    
+
     return $handler->handle($request);
 });
 
@@ -59,38 +59,38 @@ $app->get('/', function ($request, $response) {
 
 $app->get('/urls', function ($request, $response) {
     $urls = $this->get('urlModel')->getAllWithLastCheck();
-    
+
     $params = [
         'itemMenu' => 'urls',
         'urls' => $urls,
         'flash' => $this->get('flash')
     ];
-    
+
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
 })->setName('urls.index');
 
 $app->get('/urls/{id}', function ($request, $response, $args) {
     $url = $this->get('urlModel')->find($args['id']);
-    
+
     if (!$url) {
         return $response->withStatus(404)->write('Page not found');
     }
 
     $checks = $this->get('urlCheckModel')->findByUrlId($args['id']);
-    
+
     $params = [
         'url' => $url,
         'checks' => $checks,
         'flash' => $this->get('flash')
     ];
-    
+
     return $this->get('renderer')->render($response, 'show.phtml', $params);
 })->setName('urls.show');
 
 $app->post('/urls', function ($request, $response) {
     $urlName = $request->getParsedBody()['url']['name'] ?? '';
     $errors = UrlValidator::validate(['name' => $urlName]);
-    
+
     if (!empty($errors)) {
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
@@ -98,11 +98,11 @@ $app->post('/urls', function ($request, $response) {
             'flash' => $this->get('flash')
         ]);
     }
-    
+
     $normalizedUrl = UrlValidator::normalize($urlName);
     $urlModel = $this->get('urlModel');
     $existingUrl = $urlModel->findByName($normalizedUrl);
-    
+
     if ($existingUrl) {
         $this->get('flash')->addMessage('success', 'Страница уже существует');
         $urlId = $existingUrl['id'];
@@ -110,7 +110,7 @@ $app->post('/urls', function ($request, $response) {
         $urlId = $urlModel->create($normalizedUrl);
         $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
     }
-    
+
     $routeParser = $this->get(RouteParserInterface::class);
     return $response
         ->withHeader('Location', $routeParser->urlFor('urls.show', ['id' => $urlId]))
@@ -121,17 +121,18 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
     $urlCheckModel = $this->get('urlCheckModel');
-    
+
     $url = $urlModel->find($urlId);
     if (!$url) {
         return $response->withStatus(404)->write('Page not found');
     }
 
     $result = $urlCheckModel->performCheck($urlId, $url['name']);
-    
-    $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ? 'success' : 'warning') : 'error';
+
+    $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
+    'success' : 'warning') : 'error';
     $this->get('flash')->addMessage($messageType, $result['message']);
-    
+
     $routeParser = $this->get(RouteParserInterface::class);
     return $response
         ->withHeader('Location', $routeParser->urlFor('urls.show', ['id' => $urlId]))
