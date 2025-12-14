@@ -1,8 +1,11 @@
 name: SonarChek
 
 on: 
-  - pull_request
-  - push
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -11,8 +14,8 @@ permissions:
   checks: write
   
 jobs:
-  build:
-
+sonarqube:
+    name: SonarQube
     runs-on: ubuntu-latest
 
     steps:
@@ -21,8 +24,8 @@ jobs:
       - name: PHP Security Checker
         uses: StephaneBour/actions-php-security-checker@1.2
 
-      - name: Setup project
-        run: make setup
+      - name: make install
+        run: make install
 
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
@@ -30,17 +33,10 @@ jobs:
           php-version: '8.4'
           coverage: xdebug
 
-deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
+      - name: make lint
+        run: make lint
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: docker/setup-buildx-action@v1
-
-      - uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
