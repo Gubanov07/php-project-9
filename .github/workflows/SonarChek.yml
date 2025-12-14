@@ -15,7 +15,6 @@ permissions:
   
 jobs:
 sonarqube:
-    name: SonarQube
     runs-on: ubuntu-latest
 
     steps:

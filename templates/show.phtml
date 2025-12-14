@@ -1,12 +1,13 @@
 <?php require 'components/header.phtml'; ?>
 
-<?php if (!empty($flash->getMessages())) : ?>
-    <?php foreach ($flash as $messages) : ?>
-        <?php foreach ($messages as $message) : ?>
-            <div class="alert alert-<?= $alert ?>" role="alert"><?= $message ?></div>
-        <?php endforeach ?>
-    <?php endforeach ?>
-<?php endif ?>
+<?php $messages = $flash->getMessages(); ?>
+<?php if (!empty($messages)) : ?>
+    <?php foreach ($messages as $type => $typeMessages) : ?>
+        <?php foreach ($typeMessages as $message) : ?>
+            <div class="alert alert-<?= $type ?>" role="alert"><?= htmlspecialchars($message) ?></div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+<?php endif; ?>
 
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
@@ -24,7 +25,11 @@
                     </tr>
                     <tr>
                         <td>Дата создания</td>
-                        <td><?= $url['created_at'] ?></td>
+                        <td>
+                            <?php if (!empty($url['created_at'])): ?>
+                                <?= date('Y-m-d H:i:s', strtotime($url['created_at'])) ?>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
