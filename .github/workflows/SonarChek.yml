@@ -19,9 +19,8 @@ sonarqube:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: PHP Security Checker
-        uses: StephaneBour/actions-php-security-checker@1.2
+        with:
+          fetch-depth: 0
 
       - name: make install
         run: make install
