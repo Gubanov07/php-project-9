@@ -47,23 +47,18 @@ class Url
             u.id,
             u.name,
             u.created_at,
-            MAX(uc.created_at) as last_check_at,
-            -- Берем статус код из последней проверки
-            (
-                SELECT uc2.status_code 
-                FROM url_checks uc2 
-                WHERE uc2.url_id = u.id 
-                ORDER BY uc2.created_at DESC 
-                LIMIT 1
-            ) as status_code
+            uc.status_code,
+            uc.created_at as last_check_at
         FROM urls u
-        LEFT JOIN url_checks uc ON u.id = uc.url_id
-        GROUP BY u.id, u.name, u.created_at
-        ORDER BY u.id DESC
-        ";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        LEFT JOIN (
+            SELECT DISTINCT ON (url_id) url_id, status_code, created_at
+            FROM url_checks
+            ORDER BY url_id, created_at DESC
+        ) uc ON u.id = uc.url_id
+        ORDER BY u.created_at DESC
+    ";
+
+        $stmt = $this->db->query($sql);
         return $stmt->fetchAll();
     }
 }
