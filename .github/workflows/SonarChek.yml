@@ -14,7 +14,7 @@ permissions:
   checks: write
   
 jobs:
-sonarqube:
+  build:
     runs-on: ubuntu-latest
 
     steps:
