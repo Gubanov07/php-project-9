@@ -57,6 +57,7 @@ $app->get('/', function ($request, $response) {
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
 
+// Urls
 $app->get('/urls', function ($request, $response) {
     $urls = $this->get('urlModel')->getAllWithLastCheck();
 
@@ -117,6 +118,7 @@ $app->post('/urls', function ($request, $response) {
         ->withStatus(302);
 });
 
+// Проверка адреса
 $app->post('/urls/{id}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
