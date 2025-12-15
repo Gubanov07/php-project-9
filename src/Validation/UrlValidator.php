@@ -13,7 +13,15 @@ class UrlValidator
         $v->rule('lengthMax', 'name', 255)->message('URL превышает 255 символов');
         $v->rule('url', 'name')->message('Некорректный URL');
 
-        return $v->validate() ? [] : $v->errors();
+        if ($v->validate()) {
+            return [];
+        }
+
+        $errors = [];
+        foreach ($v->errors() as $field => $fieldErrors) {
+            $errors[$field] = $fieldErrors[0] ?? '';
+        }
+        return $errors;
     }
 
     public static function normalize($url)

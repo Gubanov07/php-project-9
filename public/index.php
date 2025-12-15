@@ -93,6 +93,8 @@ $app->post('/urls', function ($request, $response) {
     $errors = UrlValidator::validate(['name' => $urlName]);
 
     if (!empty($errors)) {
+        $errorMessage = $errors['name'] ?? 'Ошибка валидации';
+        $this->get('flash')->addMessage('error', $errorMessage);
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
             'errors' => $errors,
