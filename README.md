@@ -1,26 +1,22 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Gubanov07/php-project-9/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Gubanov07/php-project-9/actions)
 [![Git Actions](https://github.com/Gubanov07/php-project-9/actions/workflows/SonarChek.yml/badge.svg)](https://github.com/Gubanov07/php-project-9/actions)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=Gubanov07_php-project-9&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Gubanov07_php-project-9) 
 
 
-## Page Analyzer
-Page Analyzer - a site that analyzes the specified pages for SEO suitability by analogy with PageSpeed Insights.
+## Анализатор страниц
+Анализатор страниц - это сайт, который анализирует указанные страницы на предмет их SEO-пригодности по аналогии с PageSpeed Insights.
 
-It is a project of PHP courses from the [Hexlet](https://hexlet.io/) educational portal.
+Демонстрация: https://php-project-9-itza.onrender.com
 
-See demo: https://php-project-9-itza.onrender.com
-
-## Requirements
+## Минимальные требования
 * PHP 8.0+
 * Composer
 
-## Installation
+## Инструкция по установке и запуску
 ```
 $ git clone https://github.com/Gubanov07/php-project-9.git
-
 $ cd php-project-9
-
 $ make install
-
 $ make start
 ```
