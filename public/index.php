@@ -50,13 +50,12 @@ $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
 $app->get('/', function ($request, $response) {
-    $params = ['itemMenu' => 'main'];
-    if (isset($url)) {
-        $params['url'] = $url;
-    }
-    if (isset($errors)) {
-        $params['errors'] = $errors;
-    }
+    $params = [
+        'itemMenu' => 'main',
+        'url' => ['name' => ''],
+        'errors' => [],
+        'flash' => $this->get('flash')
+    ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
 

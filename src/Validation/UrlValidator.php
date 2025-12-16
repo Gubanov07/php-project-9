@@ -18,8 +18,14 @@ class UrlValidator
         }
 
         $errors = [];
-        foreach ($v->errors() as $field => $fieldErrors) {
-            $errors[$field] = $fieldErrors[0] ?? '';
+        $valitronErrors = $v->errors();
+
+        if (is_array($valitronErrors)) {
+            foreach ($valitronErrors as $field => $fieldErrors) {
+                if (is_array($fieldErrors) && !empty($fieldErrors[0])) {
+                    $errors[$field] = $fieldErrors[0];
+                }
+            }
         }
         return $errors;
     }

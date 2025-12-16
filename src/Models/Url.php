@@ -14,7 +14,7 @@ class Url
         $this->db = $db;
     }
 
-    public function find($id): ?array
+    public function find(int $id): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE id = ?');
         $stmt->execute([$id]);
@@ -22,7 +22,7 @@ class Url
         return $result ?: null;
     }
 
-    public function findByName($name): ?array
+    public function findByName(string $name): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE name = ?');
         $stmt->execute([$name]);
@@ -37,7 +37,7 @@ class Url
         return $result ?: [];
     }
 
-    public function create($name): int
+    public function create(string $name): int
     {
         $stmt = $this->db->prepare('INSERT INTO urls (name) VALUES (?) RETURNING id');
         $stmt->execute([$name]);
@@ -48,7 +48,7 @@ class Url
     public function getAllWithLastCheck(): array
     {
         $sql = "
-        SELECT 
+        SELECT
             u.id,
             u.name,
             u.created_at,

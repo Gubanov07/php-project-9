@@ -101,13 +101,19 @@ class UrlCheck
     private function extractH1(Document $document): ?string
     {
         $h1Element = $document->first('h1');
-        return $h1Element ? trim($h1Element->text()) : null;
+        if ($h1Element && method_exists($h1Element, 'text')) {
+            return trim($h1Element->text());
+        }
+    return null;
     }
 
     private function extractTitle(Document $document): ?string
     {
         $titleElement = $document->first('title');
-        return $titleElement ? trim($titleElement->text()) : null;
+        if ($titleElement && method_exists($titleElement, 'text')) {
+            return trim($titleElement->text());
+        }
+    return null;
     }
 
     private function extractDescription(Document $document): ?string
