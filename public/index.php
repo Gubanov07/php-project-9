@@ -1,5 +1,8 @@
 <?php
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use DiDom\Document;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
@@ -47,13 +50,13 @@ $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
 $app->get('/', function ($request, $response) {
-    $params = ['itemMenu' => 'main'];
-    if (isset($url)) {
-        $params['url'] = $url;
-    }
-    if (isset($errors)) {
-        $params['errors'] = $errors;
-    }
+    $params = [
+        'itemMenu' => 'main',
+        'url' => ['name' => ''],
+        'errors' => [],
+        'flash' => $this->get('flash')
+    ];
+
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
 
@@ -133,7 +136,8 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) {
 
     $result = $urlCheckModel->performCheck($urlId, $url['name']);
 
-    $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
+    $messageType = $result['success'] ?
+    ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
     'success' : 'warning') : 'error';
     $this->get('flash')->addMessage($messageType, $result['message']);
 

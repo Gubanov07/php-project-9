@@ -6,7 +6,7 @@ use Valitron\Validator;
 
 class UrlValidator
 {
-    public static function validate($data)
+    public static function validate(array $data): array
     {
         $v = new Validator($data);
         $v->rule('required', 'name')->message('URL не должен быть пустым');
@@ -24,7 +24,7 @@ class UrlValidator
         return $errors;
     }
 
-    public static function normalize($url)
+    public static function normalize(string $url): string
     {
         $parsedUrl = parse_url($url);
         $scheme = $parsedUrl['scheme'] ?? 'https';

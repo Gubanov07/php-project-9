@@ -8,39 +8,39 @@ class Url
 {
     private $db;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function find($id)
+    public function find($id): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE id = ?');
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
 
-    public function findByName($name)
+    public function findByName($name): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE name = ?');
         $stmt->execute([$name]);
         return $stmt->fetch();
     }
 
-    public function all()
+    public function all(): array
     {
         $stmt = $this->db->query('SELECT * FROM urls ORDER BY created_at DESC');
         return $stmt->fetchAll();
     }
 
-    public function create($name)
+    public function create($name): int
     {
         $stmt = $this->db->prepare('INSERT INTO urls (name) VALUES (?) RETURNING id');
         $stmt->execute([$name]);
         return $stmt->fetch()['id'];
     }
 
-    public function getAllWithLastCheck()
+    public function getAllWithLastCheck(): array
     {
         $sql = "
         SELECT 

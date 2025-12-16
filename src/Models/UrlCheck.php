@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
+use PDO;
 use DiDom\Document;
+use DiDom\Element;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 class UrlCheck
 {
-    private $db;
+    private PDO $db;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function create($data)
+    public function create(array $data): int
     {
         $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description) VALUES (?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
@@ -29,21 +31,21 @@ class UrlCheck
         return $this->db->lastInsertId();
     }
 
-    public function findByUrlId($urlId)
+    public function findByUrlId(int $urlId): array
     {
         $stmt = $this->db->prepare('SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC');
         $stmt->execute([$urlId]);
         return $stmt->fetchAll();
     }
 
-    public function getLastCheck($urlId)
+    public function getLastCheck(int $urlId): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC LIMIT 1');
         $stmt->execute([$urlId]);
         return $stmt->fetch();
     }
 
-    public function performCheck($urlId, $url)
+    public function performCheck(int $urlId, string $url): array
     {
         $client = new Client([
         'timeout' => 10,
