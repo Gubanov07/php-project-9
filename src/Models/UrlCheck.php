@@ -104,7 +104,7 @@ class UrlCheck
         if ($h1Element && method_exists($h1Element, 'text')) {
             return trim($h1Element->text());
         }
-    return null;
+        return null;
     }
 
     private function extractTitle(Document $document): ?string
@@ -113,7 +113,7 @@ class UrlCheck
         if ($titleElement && method_exists($titleElement, 'text')) {
             return trim($titleElement->text());
         }
-    return null;
+        return null;
     }
 
     private function extractDescription(Document $document): ?string
