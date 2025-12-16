@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use PDO;
 
 class Url
 {
