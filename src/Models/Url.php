@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class Url
 {
-    private $db;
+    private PDO $db;
 
     public function __construct(PDO $db)
     {
