@@ -10,7 +10,7 @@ class UrlValidator
     {
         $v = new Validator($data);
         $v->rule('required', 'name')->message('URL не должен быть пустым');
-        $v->rule('lengthMax', 'name', 255)->message('URL превышает 255 символов');
+        $v->rule('lengthMax', 'name', 255)->message('Некорректный URL');
         $v->rule('url', 'name')->message('Некорректный URL');
 
         if ($v->validate()) {
