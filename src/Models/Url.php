@@ -18,27 +18,31 @@ class Url
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE id = ?');
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     public function findByName($name): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM urls WHERE name = ?');
         $stmt->execute([$name]);
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     public function all(): array
     {
         $stmt = $this->db->query('SELECT * FROM urls ORDER BY created_at DESC');
-        return $stmt->fetchAll();
+        $result = $stmt->fetchAll();
+        return $result ?: [];
     }
 
     public function create($name): int
     {
         $stmt = $this->db->prepare('INSERT INTO urls (name) VALUES (?) RETURNING id');
         $stmt->execute([$name]);
-        return $stmt->fetch()['id'];
+        $result = $stmt->fetch();
+        return (int) ($result['id'] ?? 0);
     }
 
     public function getAllWithLastCheck(): array
@@ -62,6 +66,7 @@ class Url
         ";
 
         $stmt = $this->db->query($sql);
-        return $stmt->fetchAll();
+        $result = $stmt->fetchAll();
+        return $result ?: [];
     }
 }
