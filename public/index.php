@@ -1,8 +1,6 @@
 <?php
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use DiDom\Document;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
@@ -72,7 +70,7 @@ $app->get('/urls', function ($request, $response) {
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
 })->setName('urls.index');
 
-$app->get('/urls/{id}', function ($request, $response, $args) {
+$app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
     $url = $this->get('urlModel')->find($args['id']);
 
     if (!$url) {
@@ -123,7 +121,7 @@ $app->post('/urls', function ($request, $response) {
 });
 
 // Проверка адреса
-$app->post('/urls/{id}/checks', function ($request, $response, $args) {
+$app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
     $urlCheckModel = $this->get('urlCheckModel');

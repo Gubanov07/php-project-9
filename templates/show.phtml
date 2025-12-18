@@ -1,14 +1,5 @@
 <?php require 'components/header.phtml'; ?>
 
-<?php $messages = $flash->getMessages(); ?>
-<?php if (!empty($messages)) : ?>
-    <?php foreach ($messages as $type => $typeMessages) : ?>
-        <?php foreach ($typeMessages as $message) : ?>
-            <div class="alert alert-<?= $type ?>" role="alert"><?= htmlspecialchars($message) ?></div>
-        <?php endforeach; ?>
-    <?php endforeach; ?>
-<?php endif; ?>
-
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
         <h1>Сайт: <?= $url['name'] ?></h1>
@@ -25,18 +16,14 @@
                     </tr>
                     <tr>
                         <td>Дата создания</td>
-                        <td>
-                            <?php if (!empty($url['created_at'])): ?>
-                                <?= date('Y-m-d H:i:s', strtotime($url['created_at'])) ?>
-                            <?php endif; ?>
-                        </td>
+                        <td><?= date('Y-m-d H:i:s', strtotime($url['created_at'])) ?></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
     <h2 class="mt-5 mb-3">Проверки</h2>
-    <form method="post" action="/urls/<?= $url['id'] ?>/checks">
+    <form method="post" action="<?= $router->urlFor('urls.show', ['id' => $url['id']]) ?>">
         <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form>
     <table class="table table-bordered table-hover mt-3" data-test="checks">
@@ -58,11 +45,7 @@
                 <td class="text-break"><?= $check['h1'] ?></td>
                 <td class="text-break"><?= $check['title'] ?></td>
                 <td class="text-break"><?= $check['description'] ?></td>
-                <td>
-                    <?php if (!empty($check['created_at'])): ?>
-                        <?= date('Y-m-d H:i:s', strtotime($check['created_at'])) ?>
-                    <?php endif; ?>
-                </td>
+                <td><?= date('Y-m-d H:i:s', strtotime($check['created_at'])) ?></td>
             </tr>
             <?php endforeach ?>
         </tbody>

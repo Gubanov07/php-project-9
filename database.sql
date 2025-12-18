@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS urls (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(255) UNIQUE,
+    name VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS url_checks (
     url_id BIGINT REFERENCES urls(id),
     status_code INT,
     h1 VARCHAR(255),
-    title VARCHAR(255),
+    title VARCHAR(1000),
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
