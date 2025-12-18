@@ -53,7 +53,8 @@ $app->get('/', function ($request, $response) {
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],
-        'flash' => $this->get('flash')
+        'flash' => $this->get('flash'),
+        'router' => $this->get(RouteParserInterface::class)
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
