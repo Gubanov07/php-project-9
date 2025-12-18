@@ -68,7 +68,8 @@ $app->get('/urls', function ($request, $response) {
     $params = [
         'itemMenu' => 'urls',
         'urls' => $urls,
-        'flash' => $this->get('flash')
+        'flash' => $this->get('flash'),
+        'router' => $this->get(RouteParserInterface::class) 
     ];
 
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
@@ -86,7 +87,8 @@ $app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
     $params = [
         'url' => $url,
         'checks' => $checks,
-        'flash' => $this->get('flash')
+        'flash' => $this->get('flash'),
+        'router' => $this->get(RouteParserInterface::class) 
     ];
 
     return $this->get('renderer')->render($response, 'show.phtml', $params);
