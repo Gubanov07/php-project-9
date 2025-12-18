@@ -47,15 +47,15 @@ class Url
 
     public function getAllWithLastCheck(): array
     {
-      $urls = $this->all();
-        
+        $urls = $this->all();
+
         if (empty($urls)) {
             return [];
         }
-        
+
         $urlIds = array_column($urls, 'id');
         $placeholders = implode(',', array_fill(0, count($urlIds), '?'));
-        
+
         $sql = "
             SELECT DISTINCT ON (url_id) 
                 url_id, 
@@ -65,7 +65,7 @@ class Url
             WHERE url_id IN ({$placeholders})
             ORDER BY url_id, created_at DESC
         ";
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($urlIds);
         $lastChecks = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -82,7 +82,7 @@ class Url
             $url['status_code'] = $checksMap[$url['id']]['status_code'] ?? null;
             $url['last_check_at'] = $checksMap[$url['id']]['last_check_at'] ?? null;
         }
-        
+
         return $urls;
     }
 }
