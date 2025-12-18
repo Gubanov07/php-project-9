@@ -42,7 +42,9 @@ $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
-$container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
+$container->set('renderer', function ($container) {
+    return new PhpRenderer(__DIR__ . '/../templates');
+});
 
 
 $app->addErrorMiddleware(true, true, true);

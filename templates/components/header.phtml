@@ -23,7 +23,7 @@
                     <a class="nav-link <?= (isset($itemMenu) && $itemMenu === 'main') ? 'active' : '';?>" href="<?= htmlspecialchars($router->urlFor('home')) ?>">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= (isset($itemMenu) && $itemMenu === 'urls') ? 'active' : '';?>" href="<?= htmlspecialchars($router->urlFor('urls.index')) ?>">>Сайты</a>
+                    <a class="nav-link <?= (isset($itemMenu) && $itemMenu === 'urls') ? 'active' : '';?>" href="<?= htmlspecialchars($router->urlFor('urls.index')) ?>">Сайты</a>
                 </li>
             </ul>
         </div>
