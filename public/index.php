@@ -1,7 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
@@ -55,7 +54,7 @@ $app->get('/', function ($request, $response) {
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],
-        'flash' => $this->get('flash'),
+        'messages' => $this->get('flash')->getMessages(),
         'router' => $this->get(RouteParserInterface::class)
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
@@ -68,8 +67,8 @@ $app->get('/urls', function ($request, $response) {
     $params = [
         'itemMenu' => 'urls',
         'urls' => $urls,
-        'flash' => $this->get('flash'),
-        'router' => $this->get(RouteParserInterface::class) 
+        'messages' => $this->get('flash')->getMessages(),
+        'router' => $this->get(RouteParserInterface::class)
     ];
 
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
@@ -87,8 +86,8 @@ $app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
     $params = [
         'url' => $url,
         'checks' => $checks,
-        'flash' => $this->get('flash'),
-        'router' => $this->get(RouteParserInterface::class) 
+        'messages' => $this->get('flash')->getMessages(),
+        'router' => $this->get(RouteParserInterface::class)
     ];
 
     return $this->get('renderer')->render($response, 'show.phtml', $params);
@@ -104,7 +103,8 @@ $app->post('/urls', function ($request, $response) {
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
             'errors' => $errors,
-            'flash' => $this->get('flash')
+            'messages' => $this->get('flash')->getMessages(),
+            'router' => $this->get(RouteParserInterface::class)
         ]);
     }
 
