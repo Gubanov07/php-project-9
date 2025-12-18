@@ -57,9 +57,9 @@ class Url
         $placeholders = implode(',', array_fill(0, count($urlIds), '?'));
 
         $sql = "
-            SELECT DISTINCT ON (url_id) 
-                url_id, 
-                status_code, 
+            SELECT DISTINCT ON (url_id)
+                url_id,
+                status_code,
                 created_at as last_check_at
             FROM url_checks
             WHERE url_id IN ({$placeholders})
