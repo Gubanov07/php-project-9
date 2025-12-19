@@ -13,6 +13,10 @@ use Slim\Interfaces\RouteParserInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+if (PHP_VERSION_ID >= 80400) {
+    error_reporting(E_ALL & ~E_DEPRECATED);
+}
+
 // Контейнер
 $container = new Container();
 AppFactory::setContainer($container);
