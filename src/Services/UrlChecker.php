@@ -10,7 +10,7 @@ class UrlChecker
 {
     private $client;
     private $urlCheckModel;
-    
+
     public function __construct($urlCheckModel)
     {
         $this->urlCheckModel = $urlCheckModel;
