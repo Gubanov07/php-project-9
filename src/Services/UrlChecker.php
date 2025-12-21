@@ -9,6 +9,12 @@ use DiDom\Document;
 class UrlChecker
 {
     private $client;
+    private $urlCheckModel;
+    
+    public function __construct($urlCheckModel)
+    {
+        $this->urlCheckModel = $urlCheckModel;
+    }
 
     public function performCheck(int $urlId, string $url): array
     {
