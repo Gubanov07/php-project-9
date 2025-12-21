@@ -1,13 +1,5 @@
 <?php require 'components/header.phtml'; ?>
-
-<?php $messages = $flash->getMessages(); ?>
-<?php if (!empty($messages)) : ?>
-    <?php foreach ($messages as $type => $typeMessages) : ?>
-        <?php foreach ($typeMessages as $message) : ?>
-            <div class="alert alert-<?= $type ?>" role="alert"><?= htmlspecialchars($message) ?></div>
-        <?php endforeach; ?>
-    <?php endforeach; ?>
-<?php endif; ?>
+<?php require 'components/messages.phtml'; ?>
 
 <main class="flex-grow-1">
     <div class="container-lg mt-3">

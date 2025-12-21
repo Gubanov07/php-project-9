@@ -58,7 +58,6 @@ $app->get('/', function ($request, $response) {
         'url' => ['name' => ''],
         'errors' => [],
         'messages' => $this->get('flash')->getMessages(),
-        'flash' => $this->get('flash'),
         'router' => $this->get(RouteParserInterface::class)
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
@@ -72,7 +71,6 @@ $app->get('/urls', function ($request, $response) {
         'itemMenu' => 'urls',
         'urls' => $urls,
         'messages' => $this->get('flash')->getMessages(),
-        'flash' => $this->get('flash'),
         'router' => $this->get(RouteParserInterface::class)
     ];
 
@@ -92,7 +90,6 @@ $app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
         'url' => $url,
         'checks' => $checks,
         'messages' => $this->get('flash')->getMessages(),
-        'flash' => $this->get('flash'),
         'router' => $this->get(RouteParserInterface::class)
     ];
 
@@ -109,8 +106,7 @@ $app->post('/urls', function ($request, $response) {
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
             'errors' => $errors,
-            'messages' => $this->get('flash')->getMessages(), // Уже передаем сообщения
-            'flash' => $this->get('flash'),
+            'messages' => $this->get('flash')->getMessages(),
             'router' => $this->get(RouteParserInterface::class)
         ]);
     }
