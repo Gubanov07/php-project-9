@@ -1,10 +1,12 @@
 <?php
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
 use App\Validation\UrlValidator;
+use App\Services\UrlChecker;
 use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
@@ -12,10 +14,6 @@ use Slim\Flash\Messages;
 use Slim\Interfaces\RouteParserInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-if (PHP_VERSION_ID >= 80400) {
-    error_reporting(E_ALL & ~E_DEPRECATED);
-}
 
 // Контейнер
 $container = new Container();
@@ -45,6 +43,7 @@ $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
+$container->set('urlChecker', fn() => new \App\Services\UrlChecker());
 $container->set('renderer', function ($container) {
     return new PhpRenderer(__DIR__ . '/../templates');
 });
@@ -134,7 +133,7 @@ $app->post('/urls', function ($request, $response) {
 $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
-    $urlCheckModel = $this->get('urlCheckModel');
+    $urlCheckModel = $this->get('urlChecker');
 
     $url = $urlModel->find($urlId);
     if (!$url) {
