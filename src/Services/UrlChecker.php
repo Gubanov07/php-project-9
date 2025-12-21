@@ -41,7 +41,7 @@ class UrlChecker
                 'description' => $description
             ];
 
-            $this->create($checkData);
+            $this->urlCheckModel->create($checkData);
 
             return [
                 'success' => true,
