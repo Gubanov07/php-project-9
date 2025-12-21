@@ -140,7 +140,7 @@ $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
         return $response->withStatus(404)->write('Page not found');
     }
 
-    $result = $urlChecker->check($urlId, $url['name']);
+    $result = $urlChecker->performCheck($urlId, $url['name']);
 
     $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
     'success' : 'warning') : 'error';
