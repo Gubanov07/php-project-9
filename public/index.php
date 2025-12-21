@@ -42,7 +42,8 @@ $container->set(RouteParserInterface::class, function () use ($app) {
 $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
-$container->set('urlChecker', fn($с) => new UrlChecker($c->get('db')));
+$container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
+$container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
 $container->set('renderer', function ($container) {
     return new PhpRenderer(__DIR__ . '/../templates');
 });
@@ -132,7 +133,6 @@ $app->post('/urls', function ($request, $response) {
 $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
-    $urlCheckModel = $this->get('urlCheckModel');
     $urlChecker = $this->get('urlChecker');
 
     $url = $urlModel->find($urlId);
