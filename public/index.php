@@ -6,6 +6,7 @@ use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
 use App\Validation\UrlValidator;
+use App\Services\UrlChecker;
 use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
@@ -42,7 +43,10 @@ $container->set('flash', fn() => new Messages());
 $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
-$container->set('renderer', fn() => new PhpRenderer(__DIR__ . '/../templates'));
+$container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
+$container->set('renderer', function ($container) {
+    return new PhpRenderer(__DIR__ . '/../templates');
+});
 
 
 $app->addErrorMiddleware(true, true, true);
@@ -53,7 +57,8 @@ $app->get('/', function ($request, $response) {
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],
-        'flash' => $this->get('flash')
+        'messages' => $this->get('flash')->getMessages(),
+        'router' => $this->get(RouteParserInterface::class)
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
@@ -65,13 +70,14 @@ $app->get('/urls', function ($request, $response) {
     $params = [
         'itemMenu' => 'urls',
         'urls' => $urls,
-        'flash' => $this->get('flash')
+        'messages' => $this->get('flash')->getMessages(),
+        'router' => $this->get(RouteParserInterface::class)
     ];
 
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
 })->setName('urls.index');
 
-$app->get('/urls/{id}', function ($request, $response, $args) {
+$app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
     $url = $this->get('urlModel')->find($args['id']);
 
     if (!$url) {
@@ -83,7 +89,8 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
     $params = [
         'url' => $url,
         'checks' => $checks,
-        'flash' => $this->get('flash')
+        'messages' => $this->get('flash')->getMessages(),
+        'router' => $this->get(RouteParserInterface::class)
     ];
 
     return $this->get('renderer')->render($response, 'show.phtml', $params);
@@ -99,7 +106,8 @@ $app->post('/urls', function ($request, $response) {
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
             'errors' => $errors,
-            'flash' => $this->get('flash')
+            'messages' => $this->get('flash')->getMessages(),
+            'router' => $this->get(RouteParserInterface::class)
         ]);
     }
 
@@ -122,17 +130,17 @@ $app->post('/urls', function ($request, $response) {
 });
 
 // Проверка адреса
-$app->post('/urls/{id}/checks', function ($request, $response, $args) {
+$app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
     $urlId = $args['id'];
     $urlModel = $this->get('urlModel');
-    $urlCheckModel = $this->get('urlCheckModel');
+    $urlChecker = $this->get('urlChecker');
 
     $url = $urlModel->find($urlId);
     if (!$url) {
         return $response->withStatus(404)->write('Page not found');
     }
 
-    $result = $urlCheckModel->performCheck($urlId, $url['name']);
+    $result = $urlChecker->performCheck($urlId, $url['name']);
 
     $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
     'success' : 'warning') : 'error';

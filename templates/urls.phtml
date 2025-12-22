@@ -17,7 +17,10 @@
                     <?php foreach ($urls as $url) : ?>
                     <tr>
                         <td><?= $url['id'] ?></td>
-                        <td><a href="/urls/<?= $url['id'] ?>"><?= $url['name'] ?></a></td>
+                        <td>
+                            <a href="<?= $router->urlFor('urls.show', ['id' => $url['id']]) ?>">
+                            <?= htmlspecialchars($url['name']) ?>
+                        </td>
                         <td>
                             <?php if (!empty($url['last_check_at'])): ?>
                                 <?= date('Y-m-d H:i:s', strtotime($url['last_check_at'])) ?>
