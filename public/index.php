@@ -56,7 +56,7 @@ $app->get('/', function ($request, $response) {
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],
-        'massage' => $this->get('flash')->getMessages(),
+        'massages' => $this->get('flash')->getMessages(),
         'router' => $this->get(RouteParserInterface::class)
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
@@ -69,7 +69,7 @@ $app->get('/urls', function ($request, $response) {
     $params = [
         'itemMenu' => 'urls',
         'urls' => $urls,
-        'message' => $this->get('flash')->getMessages(),
+        'messages' => $this->get('flash')->getMessages(),
         'router' => $this->get(RouteParserInterface::class)
     ];
 
@@ -88,7 +88,7 @@ $app->get('/urls/{id:[0-9]+}', function ($request, $response, $args) {
     $params = [
         'url' => $url,
         'checks' => $checks,
-        'message' => $this->get('flash')->getMessages(),
+        'messages' => $this->get('flash')->getMessages(),
         'router' => $this->get(RouteParserInterface::class)
     ];
 
@@ -105,7 +105,7 @@ $app->post('/urls', function ($request, $response) {
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', [
             'url' => ['name' => $urlName],
             'errors' => $errors,
-            'message' => $this->get('flash')->getMessages(),
+            'messages' => $this->get('flash')->getMessages(),
             'router' => $this->get(RouteParserInterface::class)
         ]);
     }
@@ -126,7 +126,7 @@ $app->post('/urls', function ($request, $response) {
     return $response
         ->withHeader('Location', $routeParser->urlFor('urls.show', ['id' => $urlId]))
         ->withStatus(302);
-});
+})->setName('urls.store');
 
 // Проверка адреса
 $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
