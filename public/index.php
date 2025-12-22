@@ -1,7 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
