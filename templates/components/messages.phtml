@@ -1,4 +1,5 @@
-<?php if (isset($messages) && !empty($messages)): ?>
+<?php $messages = $flash->getMessages(); ?>
+<?php if (!empty($messages)) : ?>
     <?php foreach ($messages as $type => $typeMessages) : ?>
         <?php foreach ($typeMessages as $message) : ?>
             <div class="alert alert-<?= $type ?>" role="alert"><?= htmlspecialchars($message) ?></div>
