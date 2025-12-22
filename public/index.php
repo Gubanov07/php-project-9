@@ -2,7 +2,6 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use DiDom\Document;
 use App\Database;
 use App\Models\Url;
 use App\Models\UrlCheck;
