@@ -9,9 +9,9 @@ use App\Models\UrlCheck;
 
 class UrlChecker
 {
-    private object $urlCheckModel;
+    private UrlCheck $urlCheckModel;
 
-    public function __construct(object $urlCheckModel)
+    public function __construct(UrlCheck $urlCheckModel)
     {
         $this->urlCheckModel = $urlCheckModel;
     }
