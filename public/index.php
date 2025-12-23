@@ -111,7 +111,7 @@ $app->post('/urls', function ($request, $response) {
     }
 
     $normalizedUrl = UrlValidator::normalize($urlName);
-    $urlModel = $this->get('urlModel');
+    $urlModel = $this->get('urlChecker');
     $existingUrl = $urlModel->findByName($normalizedUrl);
 
     if ($existingUrl) {
