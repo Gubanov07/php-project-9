@@ -5,38 +5,21 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use DiDom\Document;
+use App\Models\UrlCheck;
 
 class UrlChecker
 {
-    private $client;
+    private ?Client $client;
     private $urlCheckModel;
 
     public function __construct($urlCheckModel)
     {
+        $this->client = null;
         $this->urlCheckModel = $urlCheckModel;
     }
 
     public function performCheck(int $urlId, string $url): array
     {
-        if (strpos($url, 'success.local') !== false) {
-            $statusCode = 200;
-            $checkData = [
-                'url_id' => $urlId,
-                'status_code' => $statusCode,
-                'h1' => 'Do not expect a miracle, miracles yourself!',
-                'title' => 'Awesome page',
-                'description' => 'Statements of great people'
-            ];
-
-            $this->urlCheckModel->create($checkData);
-
-            return [
-                'success' => true,
-                'status_code' => $statusCode,
-                'message' => 'Страница успешно проверена'
-            ];
-        }
-
         $client = new Client([
         'timeout' => 10,
         'connect_timeout' => 10,
