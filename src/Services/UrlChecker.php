@@ -27,9 +27,9 @@ class UrlChecker
                 'title' => 'Awesome page',
                 'description' => 'Statements of great people'
             ];
-            
+
             $this->urlCheckModel->create($checkData);
-            
+
             return [
                 'success' => true,
                 'status_code' => $statusCode,
