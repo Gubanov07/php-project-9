@@ -1,7 +1,7 @@
 <?php if (isset($messages) && !empty($messages)) : ?>
     <?php foreach ($messages as $type => $typeMessages) : ?>
         <?php foreach ($typeMessages as $message) : ?>
-            <div class="alert alert-<?= $htmlspecialchars($type) ?>" role="alert"><?= htmlspecialchars($message) ?></div>
+            <div class="alert alert-<?= htmlspecialchars($type) ?>" role="alert"><?= htmlspecialchars($message) ?></div>
         <?php endforeach; ?>
     <?php endforeach; ?>
 <?php endif; ?>
