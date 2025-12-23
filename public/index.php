@@ -126,7 +126,7 @@ $app->post('/urls', function ($request, $response) {
     return $response
         ->withHeader('Location', $routeParser->urlFor('urls.show', ['id' => $urlId]))
         ->withStatus(302);
-})->setName('urls.store');
+});
 
 // Проверка адреса
 $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
