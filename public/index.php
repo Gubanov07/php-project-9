@@ -140,10 +140,12 @@ $app->post('/urls/{id:[0-9]+}/checks', function ($request, $response, $args) {
     }
 
     $result = $urlChecker->performCheck($urlId, $url['name']);
-
-    $messageType = $result['success'] ? ($result['status_code'] >= 200 && $result['status_code'] < 300 ?
-    'success' : 'warning') : 'error';
-    $this->get('flash')->addMessage($messageType, $result['message']);
+    
+    if ($result['success']) {
+        $this->get('flash')->addMessage('success', $result['message']);
+    } else {
+        $this->get('flash')->addMessage('error', $result['message']);
+    }
 
     $routeParser = $this->get(RouteParserInterface::class);
     return $response
