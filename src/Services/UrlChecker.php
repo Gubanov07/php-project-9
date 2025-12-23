@@ -9,12 +9,10 @@ use App\Models\UrlCheck;
 
 class UrlChecker
 {
-    private ?Client $client;
-    private $urlCheckModel;
+    private object $urlCheckModel;
 
-    public function __construct($urlCheckModel)
+    public function __construct(object $urlCheckModel)
     {
-        $this->client = null;
         $this->urlCheckModel = $urlCheckModel;
     }
 
