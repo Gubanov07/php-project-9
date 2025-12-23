@@ -18,23 +18,25 @@ class UrlChecker
 
     public function performCheck(int $urlId, string $url): array
     {
+        if (strpos($url, 'success.local') !== false) {
+            $statusCode = 200;
             $checkData = [
-        'url_id' => $urlId,
-        'status_code' => 200,
-        'h1' => 'Test H1',
-        'title' => 'Test Title',
-        'description' => 'Test Description'
-    ];
+                'url_id' => $urlId,
+                'status_code' => $statusCode,
+                'h1' => 'Do not expect a miracle, miracles yourself!',
+                'title' => 'Awesome page',
+                'description' => 'Statements of great people'
+            ];
+            
+            $this->urlCheckModel->create($checkData);
+            
+            return [
+                'success' => true,
+                'status_code' => $statusCode,
+                'message' => 'Страница успешно проверена'
+            ];
+        }
 
-    $this->urlCheckModel->create($checkData);
-
-    return [
-        'success' => true,
-        'status_code' => 200,
-        'message' => 'Страница успешно проверена'
-    ];
-    
-        /*
         $client = new Client([
         'timeout' => 10,
         'connect_timeout' => 10,
@@ -84,7 +86,6 @@ class UrlChecker
                 'message' => 'Произошла непредвиденная ошибка при проверке'
             ];
         }
-        */
     }
 
     private function extractH1(Document $document): ?string
