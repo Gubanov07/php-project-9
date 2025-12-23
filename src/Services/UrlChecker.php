@@ -52,9 +52,7 @@ class UrlChecker
             return [
                 'success' => true,
                 'status_code' => $statusCode,
-                'message' => $statusCode >= 200 && $statusCode < 300
-                    ? 'Страница успешно проверена'
-                    : "Страница проверена, но вернула код {$statusCode}"
+                'message' => 'Страница успешно проверена'
             ];
         } catch (RequestException $e) {
             return [
