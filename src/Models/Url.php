@@ -47,42 +47,33 @@ class Url
 
     public function getAllWithLastCheck(): array
     {
-        $urls = $this->all();
+    $sql = "
+        SELECT
+            u.id,
+            u.name,
+            u.created_at,
+            (
+                SELECT status_code
+                FROM url_checks
+                WHERE url_id = u.id
+                ORDER BY created_at DESC
+                LIMIT 1
+            ) as status_code,
+            (
+                SELECT created_at
+                FROM url_checks
+                WHERE url_id = u.id
+                ORDER BY created_at DESC
+                LIMIT 1
+            ) as last_check_at
+        FROM urls u
+        ORDER BY u.created_at DESC
+    ";
 
-        if (empty($urls)) {
-            return [];
-        }
+    $stmt = $this->db->query($sql);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    return $result ?: [];
 
-        $urlIds = array_column($urls, 'id');
-        $placeholders = implode(',', array_fill(0, count($urlIds), '?'));
-
-        $sql = "
-            SELECT DISTINCT ON (url_id)
-                url_id,
-                status_code,
-                created_at as last_check_at
-            FROM url_checks
-            WHERE url_id IN ({$placeholders})
-            ORDER BY url_id, created_at DESC
-        ";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute($urlIds);
-        $lastChecks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $checksMap = [];
-        foreach ($lastChecks as $check) {
-            $checksMap[$check['url_id']] = [
-                'status_code' => $check['status_code'],
-                'last_check_at' => $check['last_check_at']
-            ];
-        }
-
-        foreach ($urls as &$url) {
-            $url['status_code'] = $checksMap[$url['id']]['status_code'] ?? null;
-            $url['last_check_at'] = $checksMap[$url['id']]['last_check_at'] ?? null;
-        }
-
-        return $urls;
     }
 }

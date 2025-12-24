@@ -38,6 +38,7 @@ class UrlCheck
     {
         $stmt = $this->db->prepare('SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC LIMIT 1');
         $stmt->execute([$urlId]);
-        return $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result !== false ? $result : null;
     }
 }
