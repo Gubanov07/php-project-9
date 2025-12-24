@@ -3,9 +3,6 @@
 namespace App\Models;
 
 use PDO;
-use DiDom\Document;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
 class UrlCheck
 {

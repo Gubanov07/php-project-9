@@ -43,10 +43,11 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
-$container->set('renderer', function ($container) {
-    return new PhpRenderer(__DIR__ . '/../templates');
+$container->set('renderer', function () {
+    return new PhpRenderer(__DIR__ . '/../templates', [
+        'layout' => 'layout.phtml'
+    ]);
 });
-
 
 $app->addErrorMiddleware(true, true, true);
 
@@ -65,6 +66,13 @@ $app->get('/', function ($request, $response) {
 // Urls
 $app->get('/urls', function ($request, $response) {
     $urls = $this->get('urlModel')->getAllWithLastCheck();
+    $urlCheckModel = $this->get('urlCheckModel');
+
+    foreach ($urls as &$url) {
+        $lastCheck = $urlCheckModel->getLastCheck($url['id']);
+        $url['status_code'] = $lastCheck['status_code'] ?? null;
+        $url['last_check_at'] = $lastCheck['created_at'] ?? null;
+    }
 
     $params = [
         'itemMenu' => 'urls',

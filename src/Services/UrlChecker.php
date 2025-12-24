@@ -18,7 +18,7 @@ class UrlChecker
 
     public function performCheck(int $urlId, string $url): array
     {
-        if (strpos($url, 'success.local') !== false) {
+        if (str_contains($url, 'success.local') !== false) {
             $statusCode = 200;
             $checkData = [
                 'url_id' => $urlId,

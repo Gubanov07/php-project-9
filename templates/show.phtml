@@ -43,9 +43,9 @@
             <tr>
                 <td><?= $check['id'] ?></td>
                 <td><?= $check['status_code'] ?></td>
-                <td class="text-break"><?= $check['h1'] ?></td>
-                <td class="text-break"><?= $check['title'] ?></td>
-                <td class="text-break"><?= $check['description'] ?></td>
+                <td class="text-break"><?= htmlspecialchars($check['h1'] ?? '') ?></td>
+                <td class="text-break"><?= htmlspecialchars($check['title'] ?? '') ?></td>
+                <td class="text-break"><?= htmlspecialchars($check['description'] ?? '') ?></td>
                 <td><?= date('Y-m-d H:i:s', strtotime($check['created_at'])) ?></td>
             </tr>
             <?php endforeach ?>
