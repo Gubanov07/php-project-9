@@ -3,21 +3,21 @@
 
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
-        <h1>Сайт: <?= $url['name'] ?></h1>
+        <h1>Сайт: <?= htmlspecialchars($url['name']) ?></h1>
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-nowrap" data-test="url">
                 <tbody>
                     <tr>
                         <td>ID</td>
-                        <td><?= $url['id'] ?></td>
+                        <td><?= htmlspecialchars($url['id']) ?></td>
                     </tr>
                     <tr>
                         <td>Имя</td>
-                        <td><?= $url['name'] ?></td>
+                        <td><?= htmlspecialchars($url['name']) ?></td>
                     </tr>
                     <tr>
                         <td>Дата создания</td>
-                        <td><?= date('Y-m-d H:i:s', strtotime($url['created_at'])) ?></td>
+                        <td><?= htmlspecialchars(date('Y-m-d H:i:s', strtotime($url['created_at']))) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -41,12 +41,12 @@
         <tbody>
             <?php foreach ($checks as $check) : ?>
             <tr>
-                <td><?= $check['id'] ?></td>
-                <td><?= $check['status_code'] ?></td>
+                <td><?= htmlspecialchars($check['id']) ?></td>
+                <td><?= htmlspecialchars($check['status_code']) ?></td>
                 <td class="text-break"><?= htmlspecialchars($check['h1'] ?? '') ?></td>
                 <td class="text-break"><?= htmlspecialchars($check['title'] ?? '') ?></td>
                 <td class="text-break"><?= htmlspecialchars($check['description'] ?? '') ?></td>
-                <td><?= date('Y-m-d H:i:s', strtotime($check['created_at'])) ?></td>
+                <td><?= htmlspecialchars(date('Y-m-d H:i:s', strtotime($check['created_at']))) ?></td>
             </tr>
             <?php endforeach ?>
         </tbody>

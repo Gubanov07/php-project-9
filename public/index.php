@@ -43,8 +43,8 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
-$container->set('renderer', function ($container) {
-    return new PhpRenderer(__DIR__ . '/../templates');
+$container->set('renderer', function () {
+    return new PhpRenderer(__DIR__ . '/../templates', ['layout' => 'layout.phtml']);
 });
 
 
