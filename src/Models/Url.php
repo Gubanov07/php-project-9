@@ -47,7 +47,7 @@ class Url
 
     public function getAllWithLastCheck(): array
     {
-    $sql = "
+        $sql = "
         SELECT
             u.id,
             u.name,
@@ -70,10 +70,9 @@ class Url
         ORDER BY u.created_at DESC
     ";
 
-    $stmt = $this->db->query($sql);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    return $result ?: [];
+        $stmt = $this->db->query($sql);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        return $result ?: [];
     }
 }
