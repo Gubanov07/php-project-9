@@ -44,8 +44,9 @@ $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
 $container->set('renderer', function ($container) {
-    return new PhpRenderer(__DIR__ . '/../templates', ['layout' => 'layout.phtml']);
-    $renderer->addAttribute('router', $container->get(RouteParserInterface::class));
+    $renderer = new PhpRenderer(__DIR__ . '/../templates', ['layout' => 'layout.phtml']);
+    error_log('Renderer created with layout: layout.phtml');
+    return $renderer;
 });
 
 $app->addErrorMiddleware(true, true, true);
