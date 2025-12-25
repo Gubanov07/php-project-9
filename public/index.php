@@ -43,12 +43,23 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
-$container->set('renderer', function () {
-    return new PhpRenderer(__DIR__ . '/../templates');
+$container->set('renderer', function ($container) {
+    $renderer = new PhpRenderer(__DIR__ . '/../templates');
+    $renderer->addAttribute('router', $container->get(RouteParserInterface::class));
+    $renderer->setLayout('layout.phtml');
+    return $renderer;
 });
 
 
 $app->addErrorMiddleware(true, true, true);
+
+$app->add(function ($request, $handler) use ($container) {
+    $response = $handler->handle($request);
+    $renderer = $container->get('renderer');
+    $renderer->addAttribute('flashMessages', $container->get('flash')->getMessages());
+
+    return $response;
+});
 
 // Маршруты
 $app->get('/', function ($request, $response) {
