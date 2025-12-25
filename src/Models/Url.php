@@ -48,7 +48,7 @@ class Url
     public function getAllWithLastCheck(): array
     {
         $urls = $this->all();
-        
+
         if (empty($urls)) {
             return [];
         }
@@ -86,4 +86,3 @@ class Url
         return $urls;
     }
 }
-
