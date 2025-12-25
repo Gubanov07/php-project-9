@@ -43,16 +43,17 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
-$container->set('renderer', function () {
+$container->set('renderer', function ($container) {
     return new PhpRenderer(__DIR__ . '/../templates', ['layout' => 'layout.phtml']);
+    $renderer->addAttribute('router', $container->get(RouteParserInterface::class));
 });
-
 
 $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
 $app->get('/', function ($request, $response) {
     $params = [
+        'title' => 'Анализатор страниц',
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],

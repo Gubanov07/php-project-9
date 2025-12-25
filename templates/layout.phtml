@@ -29,15 +29,11 @@
 
     <?php require 'components/messages.phtml'; ?>
     
-    <?php if (isset($content)): ?>
-        <?= $content ?>
-    <?php else: ?>
-        <main class="flex-grow-1">
-            <div class="container-lg mt-3">
-                <?php require $template ?>
-            </div>
-        </main>
-    <?php endif; ?>
+    <main class="flex-grow-1">
+        <div class="container-lg mt-3">
+            <?= $content ?>
+        </div>
+    </main>
     
     <footer class="flex-shrink-0 border-top py-3 mt-5">
     <div class="container-lg">
