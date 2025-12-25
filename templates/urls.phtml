@@ -1,32 +1,38 @@
-<div class="container-lg mt-3">
-    <h1>Сайты</h1>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover text-nowrap" data-test="urls">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Имя</th>
-                    <th>Последняя проверка</th>
-                    <th>Код ответа</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($urls as $url) : ?>
-                <tr>
-                    <td><?= htmlspecialchars($url['id']) ?></td>
-                    <td>
-                        <a href="<?= htmlspecialchars($router->urlFor('urls.show', ['id' => $url['id']])) ?>">
-                        <?= htmlspecialchars($url['name']) ?>
-                    </td>
-                    <td>
-                        <?php if (!empty($url['last_check_at'])): ?>
-                            <?= date('Y-m-d H:i:s', strtotime($url['last_check_at'])) ?>
-                        <?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($url['status_code'] ?? '') ?></td>
-                </tr>
-                <?php endforeach ?>
-            </tbody>
-        </table>
+<?php require 'components/header.phtml'; ?>
+
+<main class="flex-grow-1">
+    <div class="container-lg mt-3">
+        <h1>Сайты</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-nowrap" data-test="urls">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Последняя проверка</th>
+                        <th>Код ответа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($urls as $url) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($url['id']) ?></td>
+                        <td>
+                            <a href="<?= htmlspecialchars($router->urlFor('urls.show', ['id' => $url['id']])) ?>">
+                            <?= htmlspecialchars($url['name']) ?>
+                        </td>
+                        <td>
+                            <?php if (!empty($url['last_check_at'])): ?>
+                                <?= date('Y-m-d H:i:s', strtotime($url['last_check_at'])) ?>
+                            <?php endif; ?>
+                        </td>
+                        <td><?= htmlspecialchars($url['status_code'] ?? '') ?></td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</main>
+
+<?php require 'components/footer.phtml'; ?>

@@ -43,18 +43,16 @@ $container->set('db', fn() => Database::getInstance()->getConnection());
 $container->set('urlModel', fn($c) => new Url($c->get('db')));
 $container->set('urlCheckModel', fn($c) => new UrlCheck($c->get('db')));
 $container->set('urlChecker', fn($c) => new UrlChecker($c->get('urlCheckModel')));
-$container->set('renderer', function ($container) {
-    $renderer = new PhpRenderer(__DIR__ . '/../templates', ['layout' => 'layout.phtml']);
-    error_log('Renderer created with layout: layout.phtml');
-    return $renderer;
+$container->set('renderer', function () {
+    return new PhpRenderer(__DIR__ . '/../templates');
 });
+
 
 $app->addErrorMiddleware(true, true, true);
 
 // Маршруты
 $app->get('/', function ($request, $response) {
     $params = [
-        'title' => 'Анализатор страниц',
         'itemMenu' => 'main',
         'url' => ['name' => ''],
         'errors' => [],
