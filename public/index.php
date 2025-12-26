@@ -76,13 +76,6 @@ $app->get('/', function ($request, $response) {
 // Urls
 $app->get('/urls', function ($request, $response) {
     $urls = $this->get('urlModel')->getAllWithLastCheck();
-    $urlCheckModel = $this->get('urlCheckModel');
-
-    foreach ($urls as &$url) {
-        $lastCheck = $urlCheckModel->getLastCheck($url['id']);
-        $url['status_code'] = $lastCheck['status_code'] ?? null;
-        $url['last_check_at'] = $lastCheck['created_at'] ?? null;
-    }
 
     $params = [
         'itemMenu' => 'urls',

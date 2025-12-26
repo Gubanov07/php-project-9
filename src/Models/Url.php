@@ -52,21 +52,17 @@ class Url
             u.id,
             u.name,
             u.created_at,
-            (
-                SELECT status_code
-                FROM url_checks
-                WHERE url_id = u.id
-                ORDER BY created_at DESC
-                LIMIT 1
-            ) as status_code,
-            (
-                SELECT created_at
-                FROM url_checks
-                WHERE url_id = u.id
-                ORDER BY created_at DESC
-                LIMIT 1
-            ) as last_check_at
+            uc.status_code,
+            uc.created_at as last_check_at
         FROM urls u
+        LEFT JOIN (
+            SELECT DISTINCT ON (url_id) 
+                url_id,
+                status_code,
+                created_at
+            FROM url_checks
+            ORDER BY url_id, created_at DESC
+        ) uc ON u.id = uc.url_id
         ORDER BY u.created_at DESC
     ";
 
